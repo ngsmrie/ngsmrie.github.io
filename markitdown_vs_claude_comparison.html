@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<!-- saved from url=(0251)file:///Users/of_nagashima/Library/Application%20Support/Claude/local-agent-mode-sessions/18f9af72-55bc-4841-a7cc-c414cc0a1eb4/eb1ccfc6-9e9d-4c1e-9101-6565da4eeac8/local_350af1b2-2c18-49b0-a000-39bc0dd85517/outputs/markitdown_vs_claude_comparison.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', sans-serif; background: #f5f5f5; padding: 20px; }
+
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+    width: 780px;
+  }
+  .card-header {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-header .num {
+    background: rgba(255,255,255,0.25);
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 12px;
+  }
+  .card-body {
+    display: flex;
+  }
+  .side {
+    flex: 1;
+    padding: 16px 20px 20px;
+  }
+  .side-left { border-right: 1px solid #eee; }
+  .side-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .side-left .side-label { color: #c0392b; }
+  .side-right .side-label { color: #27ae60; }
+  .badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: #fff;
+  }
+  .badge-bad { background: #e74c3c; }
+  .badge-good { background: #2ecc71; }
+
+  /* markitdown broken text simulation */
+  .broken-text {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    background: #fdf2f2;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    padding: 12px;
+    line-height: 1.7;
+    color: #555;
+    white-space: pre-wrap;
+  }
+  .broken-text .highlight {
+    background: #fde2e2;
+    color: #c0392b;
+    font-weight: 600;
+    padding: 1px 3px;
+    border-radius: 2px;
+  }
+
+  /* Claude correct reading */
+  .correct-text {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    background: #f0faf0;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    padding: 12px;
+    line-height: 1.7;
+    color: #333;
+  }
+  .correct-text .highlight {
+    background: #d4edda;
+    color: #155724;
+    font-weight: 600;
+    padding: 1px 3px;
+    border-radius: 2px;
+  }
+
+  /* flow diagram mini */
+  .flow-box {
+    display: inline-block;
+    border: 2px solid #4a90d9;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #e8f1fa;
+    color: #1e2761;
+    margin: 4px 2px;
+  }
+  .flow-arrow {
+    display: inline-block;
+    color: #4a90d9;
+    font-size: 16px;
+    margin: 0 4px;
+    vertical-align: middle;
+  }
+  .flow-missing {
+    display: inline-block;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 11px;
+    color: #999;
+    margin: 4px 2px;
+    background: #fafafa;
+  }
+  .flow-arrow-missing {
+    display: inline-block;
+    color: #ddd;
+    font-size: 16px;
+    margin: 0 4px;
+    vertical-align: middle;
+    text-decoration: line-through;
+  }
+
+  /* annotation */
+  .anno-box {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 11px;
+    background: #fafafa;
+    margin-top: 6px;
+    color: #666;
+  }
+  .anno-linked {
+    border: 1px solid #27ae60;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 11px;
+    background: #f0faf0;
+    margin-top: 6px;
+    color: #333;
+  }
+  .anno-tag {
+    display: inline-block;
+    background: #e8f1fa;
+    color: #1e2761;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-left: 4px;
+  }
+
+  /* system tools */
+  .tool-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin: 2px 3px;
+    font-weight: 600;
+  }
+  .tool-scattered {
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    color: #999;
+  }
+  .tool-mapped {
+    background: #e8f1fa;
+    border: 1px solid #4a90d9;
+    color: #1e2761;
+  }
+  .process-label {
+    font-size: 10px;
+    color: #666;
+    margin-top: 6px;
+    padding-left: 2px;
+  }
+  .process-label-good {
+    font-size: 10px;
+    color: #155724;
+    margin-top: 6px;
+    padding-left: 2px;
+    font-weight: 600;
+  }
+
+  h2.section-title {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 4px;
+    padding-left: 2px;
+  }
+
+  /* ===== Merit / Demerit Table ===== */
+  .merit-section {
+    width: 780px;
+    margin-top: 40px;
+    margin-bottom: 24px;
+  }
+  .merit-section h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e2761;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #1e2761;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .merit-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 12px;
+  }
+  .merit-table thead th {
+    padding: 12px 16px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  .merit-table thead th:first-child {
+    background: #f0f0f5;
+    color: #555;
+    text-align: left;
+    width: 180px;
+  }
+  .merit-table thead th.col-md {
+    background: linear-gradient(135deg, #fdecea, #fce4ec);
+    color: #c0392b;
+    width: 280px;
+  }
+  .merit-table thead th.col-claude {
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    color: #1b5e20;
+    width: 280px;
+  }
+  .merit-table tbody td {
+    padding: 12px 16px;
+    vertical-align: top;
+    border-bottom: 1px solid #eee;
+    line-height: 1.6;
+    color: #444;
+  }
+  .merit-table tbody tr:last-child td { border-bottom: none; }
+  .merit-table tbody td:first-child {
+    font-weight: 700;
+    color: #1e2761;
+    background: #fafafe;
+    font-size: 11px;
+  }
+  .merit-table tbody td:nth-child(2) { background: #fffafa; }
+  .merit-table tbody td:nth-child(3) { background: #fafff8; }
+
+  .tag-good {
+    display: inline-block;
+    background: #d4edda;
+    color: #155724;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 4px;
+  }
+  .tag-bad {
+    display: inline-block;
+    background: #f8d7da;
+    color: #721c24;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 4px;
+  }
+  .tag-neutral {
+    display: inline-block;
+    background: #e2e3e5;
+    color: #383d41;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 4px;
+  }
+
+  /* Summary boxes */
+  .summary-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+    width: 780px;
+  }
+  .summary-box {
+    flex: 1;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .summary-box h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .summary-box li {
+    font-size: 11px;
+    line-height: 1.7;
+    padding-left: 16px;
+    position: relative;
+    color: #444;
+  }
+  .summary-box li::before {
+    content: '•';
+    position: absolute;
+    left: 4px;
+    font-weight: 700;
+  }
+  .box-md {
+    background: linear-gradient(135deg, #fff5f5, #fff0f0);
+    border: 1px solid #f5c6cb;
+  }
+  .box-md h3 { color: #c0392b; }
+  .box-md li::before { color: #c0392b; }
+  .box-claude {
+    background: linear-gradient(135deg, #f0fff0, #e8fce8);
+    border: 1px solid #c3e6cb;
+  }
+  .box-claude h3 { color: #1b5e20; }
+  .box-claude li::before { color: #27ae60; }
+
+  .verdict-box {
+    width: 780px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 20px 24px;
+    color: #fff;
+  }
+  .verdict-box h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .verdict-box p {
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. 工程名の抽出 -->
+<div class="card">
+  <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <span class="num">観点 1</span> 工程名の抽出
+  </div>
+  <div class="card-body">
+    <div class="side side-left">
+      <div class="side-label">markitdown <span class="badge badge-bad">△</span></div>
+      <div class="broken-text">| <span class="highlight">注 文 完 了</span> メ ー ル |
+| <span class="highlight">C 在 庫 振 り 分 け</span> |
+| <span class="highlight">さ さ げ 商 品 登 録</span> |
+| 在 庫 引 当          |
+| <span class="highlight">返 品 対 応</span>（ 南 船 橋 ） |</div>
+      <p style="font-size:10px; color:#999; margin-top:8px;">※ セル分割により文字間にスペースが挿入される</p>
+    </div>
+    <div class="side side-right">
+      <div class="side-label">Claude 読み取り <span class="badge badge-good">◎</span></div>
+      <div class="correct-text">| <span class="highlight">注文完了メール</span>        |
+| <span class="highlight">C在庫振り分け</span>          |
+| <span class="highlight">ささげ商品登録</span>          |
+| 在庫引当                    |
+| <span class="highlight">返品対応（南船橋）</span>      |</div>
+      <p style="font-size:10px; color:#27ae60; margin-top:8px;">※ 工程名を正確に認識、結合済みの状態で取得</p>
+    </div>
+  </div>
+</div>
+
+<!-- 2. 担当レーンの認識 -->
+<div class="card">
+  <div class="card-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+    <span class="num">観点 2</span> 担当レーンの認識
+  </div>
+  <div class="card-body">
+    <div class="side side-left">
+      <div class="side-label">markitdown <span class="badge badge-bad">△</span></div>
+      <div class="broken-text">| 担当    | 工程             |
+|---------|-----------------|
+| <span class="highlight">W O S</span>   | 公 開             |
+| <span class="highlight">B R</span>     | C 在 庫 振 り分け |
+| <span class="highlight">W M S</span>   | 在 庫 管 理       |
+| <span class="highlight">顧 客</span>   | 注 文             |
+| <span class="highlight">W O S 運 営</span> | ささげ商品登録 |</div>
+      <p style="font-size:10px; color:#999; margin-top:8px;">※ レーン名が文字バラバラ、どの工程に紐づくか曖昧</p>
+    </div>
+    <div class="side side-right">
+      <div class="side-label">Claude 読み取り <span class="badge badge-good">◎</span></div>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">
+        <div style="border:2px solid #1e2761; border-radius:6px; padding:8px 12px; background:#e8f1fa; text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#1e2761;">顧客</div>
+          <div style="font-size:9px; color:#666; margin-top:4px;">注文 / 注文完了メール / 着荷</div>
+        </div>
+        <div style="border:2px solid #1e2761; border-radius:6px; padding:8px 12px; background:#e8f1fa; text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#1e2761;">WOS</div>
+          <div style="font-size:9px; color:#666; margin-top:4px;">公開 / 注文確定</div>
+        </div>
+        <div style="border:2px solid #1e2761; border-radius:6px; padding:8px 12px; background:#e8f1fa; text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#1e2761;">BR</div>
+          <div style="font-size:9px; color:#666; margin-top:4px;">C在庫振り分け</div>
+        </div>
+        <div style="border:2px solid #1e2761; border-radius:6px; padding:8px 12px; background:#e8f1fa; text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#1e2761;">WMS</div>
+          <div style="font-size:9px; color:#666; margin-top:4px;">在庫管理 / 出荷 / 返品対応</div>
+        </div>
+        <div style="border:2px solid #1e2761; border-radius:6px; padding:8px 12px; background:#e8f1fa; text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#1e2761;">WOS運営</div>
+          <div style="font-size:9px; color:#666; margin-top:4px;">スタジオ入庫 / ささげ / 物流集計</div>
+        </div>
+      </div>
+      <p style="font-size:10px; color:#27ae60; margin-top:10px;">※ 5レーンを正確に認識し、各工程との対応も明確</p>
+    </div>
+  </div>
+</div>
+
+<!-- 3. フローの接続関係 -->
+<div class="card">
+  <div class="card-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+    <span class="num">観点 3</span> フローの接続関係
+  </div>
+  <div class="card-body">
+    <div class="side side-left">
+      <div class="side-label">markitdown <span class="badge badge-bad">✗</span></div>
+      <div style="padding: 8px 0;">
+        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px;">
+          <span class="flow-missing">注文確定</span>
+          <span class="flow-arrow-missing">→</span>
+          <span class="flow-missing">??</span>
+        </div>
+        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin-top:8px;">
+          <span class="flow-missing">在庫引当</span>
+          <span class="flow-arrow-missing">→</span>
+          <span class="flow-missing">??</span>
+        </div>
+        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin-top:8px;">
+          <span class="flow-missing">着荷</span>
+          <span class="flow-arrow-missing">→</span>
+          <span class="flow-missing">返品?</span>
+          <span style="font-size:10px; color:#c0392b; margin-left:6px;">分岐条件 不明</span>
+        </div>
+      </div>
+      <p style="font-size:10px; color:#999; margin-top:6px;">※ 矢印は図形(Shape)のため、テキスト抽出では接続情報を取得不可</p>
+    </div>
+    <div class="side side-right">
+      <div class="side-label">Claude 読み取り <span class="badge badge-good">◎</span></div>
+      <div style="padding: 8px 0;">
+        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px;">
+          <span class="flow-box">注文確定</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-box">注文完了メール</span>
+        </div>
+        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin-top:8px;">
+          <span class="flow-box">注文確定</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-box">在庫引当</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-box">出荷</span>
+        </div>
+        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin-top:8px;">
+          <span class="flow-box" style="background:#fdecec; border-color:#990011;">着荷（返品判定）</span>
+          <span class="flow-arrow">→</span>
+          <span style="font-size:10px; color:#27ae60; font-weight:600;">返品なし →</span>
+          <span class="flow-box">注文完了</span>
+        </div>
+        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin-top:4px; padding-left:170px;">
+          <span style="font-size:10px; color:#c0392b; font-weight:600;">返品あり →</span>
+          <span class="flow-box">返送</span>
+        </div>
+      </div>
+      <p style="font-size:10px; color:#27ae60; margin-top:6px;">※ 矢印の方向・分岐条件を視覚的に判読</p>
+    </div>
+  </div>
+</div>
+
+<!-- 4. 注釈・補足情報 -->
+<div class="card">
+  <div class="card-header" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+    <span class="num">観点 4</span> 注釈・補足情報
+  </div>
+  <div class="card-body">
+    <div class="side side-left">
+      <div class="side-label">markitdown <span class="badge badge-bad">△</span></div>
+      <div class="broken-text" style="font-size:11px;">...
+※2025/07/23 確認済
+（尻江さん/根本さん/真鍋さん/原さん）
+...
+C在庫なし → 予約公開設定
+NEW → マスタメンテで公開（制作部・WBS）
+...</div>
+      <div class="anno-box">
+        <span style="color:#c0392b;">⚠</span> テキストとして取得できるが、<br>
+        <strong>どの工程に紐づく注釈なのか判別できない</strong>
+      </div>
+    </div>
+    <div class="side side-right">
+      <div class="side-label">Claude 読み取り <span class="badge badge-good">◎</span></div>
+      <div class="anno-linked">
+        <div style="margin-bottom:6px;">
+          <span class="anno-tag">WOS-EC-0106 公開</span> に紐づく注釈：
+        </div>
+        <div style="font-size:11px; line-height:1.6;">
+          ① C在庫あり → 即公開（バッチ処理）<br>
+          ② C在庫なし → 予約公開設定<br>
+          ③ NEW → マスタメンテで公開（制作部・WBS）
+        </div>
+      </div>
+      <div class="anno-linked" style="margin-top:8px;">
+        <div style="margin-bottom:6px;">
+          <span class="anno-tag">ページ全体</span> に紐づく注釈：
+        </div>
+        <div style="font-size:11px;">
+          ※2025/07/23 確認済（尻江さん/根本さん/真鍋さん/原さん）
+        </div>
+      </div>
+      <p style="font-size:10px; color:#27ae60; margin-top:8px;">※ 位置関係から対応工程を判別し、構造化して抽出</p>
+    </div>
+  </div>
+</div>
+
+<!-- 5. 使用システム -->
+<div class="card">
+  <div class="card-header" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+    <span class="num">観点 5</span> 使用システム
+  </div>
+  <div class="card-body">
+    <div class="side side-left">
+      <div class="side-label">markitdown <span class="badge badge-bad">△</span></div>
+      <div style="padding: 8px 0;">
+        <div style="font-size:11px; color:#666; margin-bottom:8px;">抽出されたシステム名（断片として散在）：</div>
+        <div>
+          <span class="tool-tag tool-scattered">G W C S</span>
+          <span class="tool-tag tool-scattered">E F S</span>
+          <span class="tool-tag tool-scattered">GATEWAY</span>
+          <span class="tool-tag tool-scattered">Mart Solution</span>
+          <span class="tool-tag tool-scattered">ベリトランス</span>
+          <span class="tool-tag tool-scattered">スコア</span>
+          <span class="tool-tag tool-scattered">Mail Dealer</span>
+          <span class="tool-tag tool-scattered">キャッシュポスト</span>
+        </div>
+        <p class="process-label">→ どの工程で使われるか不明</p>
+      </div>
+    </div>
+    <div class="side side-right">
+      <div class="side-label">Claude 読み取り <span class="badge badge-good">◎</span></div>
+      <div style="padding: 8px 0;">
+        <div style="margin-bottom:8px;">
+          <div style="font-size:10px; color:#1e2761; font-weight:700;">WOS-EC-0102 在庫管理</div>
+          <span class="tool-tag tool-mapped">GWCS</span>
+          <span class="tool-tag tool-mapped">EFS</span>
+          <span class="tool-tag tool-mapped">GATEWAY</span>
+          <span class="tool-tag tool-mapped">MartSolution</span>
+        </div>
+        <div style="margin-bottom:8px;">
+          <div style="font-size:10px; color:#1e2761; font-weight:700;">WOS-EC-0402 返品対応（南船橋）</div>
+          <span class="tool-tag tool-mapped">GWCS</span>
+          <span class="tool-tag tool-mapped">EFS</span>
+          <span class="tool-tag tool-mapped">ベリトランス</span>
+          <span class="tool-tag tool-mapped">スコア</span>
+          <span class="tool-tag tool-mapped">キャッシュポスト</span>
+        </div>
+        <p class="process-label-good">→ 各工程の下にあるシステム名を正確に対応づけ</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 検証概要 ===== -->
+<div class="merit-section" style="margin-top: 48px;">
+  <h2>🔬 検証概要</h2>
+</div>
+
+<div class="card">
+  <div class="card-header" style="background: linear-gradient(135deg, #1e2761 0%, #408EC6 100%);">
+    検証に使用したファイル（計4ファイル）
+  </div>
+  <div style="padding: 20px;">
+    <table style="width:100%; font-size:12px; border-collapse:collapse;">
+      <thead>
+        <tr style="border-bottom:2px solid #ddd;">
+          <th style="text-align:left; padding:8px 12px; color:#555; font-size:11px; width:60px;">形式</th>
+          <th style="text-align:left; padding:8px 12px; color:#555; font-size:11px;">ファイル名</th>
+          <th style="text-align:left; padding:8px 12px; color:#555; font-size:11px; width:200px;">内容</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px 12px;"><span style="background:#f0e6ff; color:#764ba2; font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px;">.pptx</span></td>
+          <td style="padding:8px 12px; font-family:monospace; font-size:11px; color:#333;">WOS業務フローチャート_原本_EC全体概要.pptx</td>
+          <td style="padding:8px 12px; color:#666;">EC全体概要フロー（原本）</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px 12px;"><span style="background:#fde2e2; color:#c0392b; font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px;">.pdf</span></td>
+          <td style="padding:8px 12px; font-family:monospace; font-size:11px; color:#333;">WOS業務フロー_WOS運営 新規企画:改修.pdf</td>
+          <td style="padding:8px 12px; color:#666;">WOS運営 新規企画・改修フロー</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px 12px;"><span style="background:#fde2e2; color:#c0392b; font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px;">.pdf</span></td>
+          <td style="padding:8px 12px; font-family:monospace; font-size:11px; color:#333;">WOS業務フローチャート_EC全体概要.pdf</td>
+          <td style="padding:8px 12px; color:#666;">EC全体概要フロー（PDF版）</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px;"><span style="background:#fde2e2; color:#c0392b; font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px;">.pdf</span></td>
+          <td style="padding:8px 12px; font-family:monospace; font-size:11px; color:#333;">WOS業務フローチャート_68期_4Q.pdf</td>
+          <td style="padding:8px 12px; color:#666;">68期 第4四半期フロー</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card" style="margin-top:16px;">
+  <div class="card-header" style="background: linear-gradient(135deg, #1e2761 0%, #408EC6 100%);">
+    検証観点と結果サマリ
+  </div>
+  <div style="padding: 20px;">
+    <table style="width:100%; font-size:12px; border-collapse:collapse;">
+      <thead>
+        <tr style="border-bottom:2px solid #ddd;">
+          <th style="text-align:left; padding:8px 12px; color:#555; font-size:11px; width:40px;">#</th>
+          <th style="text-align:left; padding:8px 12px; color:#555; font-size:11px;">検証観点</th>
+          <th style="text-align:center; padding:8px 12px; color:#c0392b; font-size:11px; width:100px;">markitdown</th>
+          <th style="text-align:center; padding:8px 12px; color:#1b5e20; font-size:11px; width:100px;">Claude</th>
+          <th style="text-align:left; padding:8px 12px; color:#555; font-size:11px;">差分の要因</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px 12px; font-weight:700; color:#764ba2;">1</td>
+          <td style="padding:8px 12px;">工程名の抽出</td>
+          <td style="padding:8px 12px; text-align:center;"><span class="tag-bad">△</span></td>
+          <td style="padding:8px 12px; text-align:center;"><span class="tag-good">◎</span></td>
+          <td style="padding:8px 12px; color:#666;">テキスト抽出時に文字間スペースが挿入され工程名が崩壊</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px 12px; font-weight:700; color:#f5576c;">2</td>
+          <td style="padding:8px 12px;">担当レーンの認識</td>
+          <td style="padding:8px 12px; text-align:center;"><span class="tag-bad">△</span></td>
+          <td style="padding:8px 12px; text-align:center;"><span class="tag-good">◎</span></td>
+          <td style="padding:8px 12px; color:#666;">レーン名が文字バラバラで工程との紐づけが曖昧</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px 12px; font-weight:700; color:#4facfe;">3</td>
+          <td style="padding:8px 12px;">フローの接続関係</td>
+          <td style="padding:8px 12px; text-align:center;"><span class="tag-bad">✗</span></td>
+          <td style="padding:8px 12px; text-align:center;"><span class="tag-good">◎</span></td>
+          <td style="padding:8px 12px; color:#666;">矢印は図形（Shape）のためテキスト抽出では取得不可</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px 12px; font-weight:700; color:#43e97b;">4</td>
+          <td style="padding:8px 12px;">注釈・補足情報</td>
+          <td style="padding:8px 12px; text-align:center;"><span class="tag-bad">△</span></td>
+          <td style="padding:8px 12px; text-align:center;"><span class="tag-good">◎</span></td>
+          <td style="padding:8px 12px; color:#666;">テキストは取得できるがどの工程に紐づく注釈か判別不可</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; font-weight:700; color:#fa709a;">5</td>
+          <td style="padding:8px 12px;">使用システム</td>
+          <td style="padding:8px 12px; text-align:center;"><span class="tag-bad">△</span></td>
+          <td style="padding:8px 12px; text-align:center;"><span class="tag-good">◎</span></td>
+          <td style="padding:8px 12px; color:#666;">システム名は断片として散在し工程との対応づけが不可</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== メリット・デメリット比較表 ===== -->
+<div class="merit-section">
+  <h2>📊 markitdown vs Claude ネイティブ読み取り ― メリット・デメリット比較</h2>
+
+  <table class="merit-table">
+    <thead>
+      <tr>
+        <th>観点</th>
+        <th class="col-md">markitdown</th>
+        <th class="col-claude">Claude ネイティブ読み取り</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 1 -->
+      <tr>
+        <td>業務フロー図<br>（.pptx / .pdf）<br><span style="font-size:9px; color:#888; font-weight:400;">※本PJ検証対象</span></td>
+        <td>
+          <span class="tag-bad">苦手</span><br>
+          テキストボックスや埋め込み文字は取得できるが、図形の配置・矢印・グループ化情報は失われる。文字間にスペースが挿入され工程名が崩壊する。<br>
+          <span style="font-size:10px; color:#999;">検証: pptx×1, PDF×3 → 5観点すべてで精度不足</span>
+        </td>
+        <td>
+          <span class="tag-good">得意</span><br>
+          ページ/スライドを画像として視覚的に認識。図形・矢印・レーン配置も含めてフロー構造を正確に把握できる。<br>
+          <span style="font-size:10px; color:#27ae60;">検証: 同ファイル → 工程名・レーン・接続・注釈・システム全て正確に抽出</span>
+        </td>
+      </tr>
+      <!-- 2 -->
+      <tr>
+        <td>PDF<br>（テキスト埋め込み）</td>
+        <td>
+          <span class="tag-good">得意</span><br>
+          テキストレイヤーから高速に抽出。ページ数が多くてもコスト・速度の影響が小さい。<br>
+          <span style="font-size:10px; color:#999;">ただしフロー図PDFでは図形情報が消失（本PJで確認済み）</span>
+        </td>
+        <td>
+          <span class="tag-neutral">場合による</span><br>
+          テキスト主体のPDFにはトークン過剰。ただし図形・矢印を含むフロー図PDFでは視覚読み取りの優位性が大きい。<br>
+          <span style="font-size:10px; color:#27ae60;">本PJ: フロー図PDF×3で検証 → 構造抽出に成功</span>
+        </td>
+      </tr>
+      <!-- 3 -->
+      <tr>
+        <td>PDF<br>（スキャン画像・手書き）</td>
+        <td>
+          <span class="tag-bad">不可</span><br>
+          テキストレイヤーがないPDFからは抽出不可。OCR機能を持たない。
+        </td>
+        <td>
+          <span class="tag-good">得意</span><br>
+          マルチモーダルで画像を直接読み取り。スキャンPDFや手書き文書もある程度認識可能。
+        </td>
+      </tr>
+      <!-- 4 -->
+      <tr>
+        <td>Excel（.xlsx）</td>
+        <td>
+          <span class="tag-neutral">部分的</span><br>
+          セルのテキストデータは取得可能。結合セル・図形・グラフは取得不可。表形式データには有効。
+        </td>
+        <td>
+          <span class="tag-good">得意</span><br>
+          画像としてレンダリングされたシートを視覚的に認識。結合セル・図形・グラフも含め把握可能。
+        </td>
+      </tr>
+      <!-- 5 -->
+      <tr>
+        <td>処理速度</td>
+        <td>
+          <span class="tag-good">高速</span><br>
+          ローカル処理のため数秒で完了。バッチ処理にも向く。
+        </td>
+        <td>
+          <span class="tag-bad">低速</span><br>
+          API呼び出し＋画像トークン処理で1ファイルあたり10〜30秒。大量処理には不向き。
+        </td>
+      </tr>
+      <!-- 6 -->
+      <tr>
+        <td>コスト</td>
+        <td>
+          <span class="tag-good">無料</span><br>
+          OSSライブラリのためライセンス費用なし。計算リソースも軽量。
+        </td>
+        <td>
+          <span class="tag-bad">有料</span><br>
+          画像入力トークン消費が大きく、大量ファイル処理ではAPI費用がかさむ。
+        </td>
+      </tr>
+      <!-- 7 -->
+      <tr>
+        <td>構造化データ抽出<br>（JSON / Markdown）</td>
+        <td>
+          <span class="tag-bad">苦手</span><br>
+          テキストをそのまま出力するのみ。構造化にはパーサーの追加実装が必要。
+        </td>
+        <td>
+          <span class="tag-good">得意</span><br>
+          プロンプトで出力形式を指定すれば、JSON・Markdown・Mermaid等に直接変換可能。
+        </td>
+      </tr>
+      <!-- 8 -->
+      <tr>
+        <td>テキスト主体の<br>ドキュメント<br>（.docx / .md / .txt）</td>
+        <td>
+          <span class="tag-good">得意</span><br>
+          テキスト抽出の精度が高く、Markdown変換も品質が良い。最もコスパの良いユースケース。
+        </td>
+        <td>
+          <span class="tag-neutral">過剰</span><br>
+          処理可能だがトークンコストに見合わない。markitdownで十分なケース。
+        </td>
+      </tr>
+      <!-- 9 -->
+      <tr>
+        <td>大量ファイル<br>一括処理</td>
+        <td>
+          <span class="tag-good">得意</span><br>
+          ループで数百ファイルを短時間処理。CI/CDパイプラインにも組み込みやすい。
+        </td>
+        <td>
+          <span class="tag-bad">不向き</span><br>
+          レート制限・コスト・処理時間の制約あり。10ファイル超は運用上要検討。
+        </td>
+      </tr>
+      <!-- 10 -->
+      <tr>
+        <td>画像内テキスト<br>（図中の注釈・ラベル）</td>
+        <td>
+          <span class="tag-bad">不可</span><br>
+          図形・画像内のテキストは一切取得できない。
+        </td>
+        <td>
+          <span class="tag-good">得意</span><br>
+          マルチモーダルで画像内の文字・注釈・ラベルを判読可能。
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== まとめボックス ===== -->
+<div class="summary-row">
+  <div class="summary-box box-md">
+    <h3>🔧 markitdown が向いているケース</h3>
+    <ul>
+      <li>テキスト主体のドキュメント（.docx / .md / .txt）の大量変換</li>
+      <li>テキストレイヤー付きPDFからの高速抽出</li>
+      <li>CI/CDパイプラインへの組み込み（ローカル・高速・無料）</li>
+      <li>100ファイル超のバッチ処理</li>
+      <li>コストを最小限に抑えたい初期段階の前処理</li>
+    </ul>
+  </div>
+  <div class="summary-box box-claude">
+    <h3>🧠 Claude 読み取りが向いているケース</h3>
+    <ul>
+      <li>pptx / PDF業務フロー図（図形・矢印・レーン配置を含む）</li>
+      <li>スキャンPDF・手書き文書のOCR的な読み取り</li>
+      <li>図形配置やレイアウトが重要なPowerPointスライド</li>
+      <li>読み取り結果をJSON / Mermaid等に直接構造化したい場合</li>
+      <li>画像内の注釈・ラベルの認識が必要な場合</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 結論 ===== -->
+<div class="verdict-box">
+  <h3>💡 業務フロー図での検証の結果</h3>
+  <p>
+    pptx×1 + PDF×3 の業務フロー図で検証した結果、5観点すべてでClaudeが優位。<strong>Claude ネイティブ読み取りを採用</strong>。
+    markitdownでは図形・矢印情報の消失やテキスト分断により、工程名・レーン・接続関係・注釈の正確な抽出が困難。
+    一方、テキスト主体の補助ドキュメント（議事録・仕様書等）が大量にある場合は、markitdownによる前処理 → Claudeで構造化、というハイブリッド運用も有効。
+  </p>
+</div>
+
+
+
+</body></html>
